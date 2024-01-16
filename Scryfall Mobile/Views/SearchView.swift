@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 struct SearchView: View {
-    @State var cardName: String = ""
+    @Binding var cardName: String
     var body: some View {
         ZStack {
             VStack {
@@ -21,12 +21,22 @@ struct SearchView: View {
                         .foregroundColor(.white)
                 }.frame(width: CGFloat(300), height: CGFloat(50), alignment: .center)
             }.background(Color("SearchBarPurple"))
-            .border(.white)
+            .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.white, lineWidth: 1))
         }
     }
-    struct ContentView_Previews: PreviewProvider {
-        static var previews: some View {
-            SearchView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
+}
+
+struct SearchButton: View {
+    @Binding var cardName: String
+    var body: some View {
+        VStack {
+            NavigationLink("Search") {
+                SearchResultView(vm: SearchResultViewModel(query: cardName, service: ScryfallAPIServices.shared))
+            }.frame(width: CGFloat(100), height: CGFloat(30), alignment: .center)
+                .foregroundColor(.white)
+                .background(Color("SearchBarPurple"))
+                .overlay(RoundedRectangle(cornerRadius: 25).stroke(Color.white, lineWidth: 1))
+                
         }
     }
 }

@@ -9,15 +9,11 @@ import Foundation
 import SwiftUI
 
 struct SearchResultView: View {
+    var vm: SearchResultViewModel
+    
     var body: some View {
         VStack {
             Text("Hello world")
         }
-    }
-}
-
-struct SearchResultView_Previews: PreviewProvider {
-    static var previews: some View {
-        SearchResultView().environment(\.managedObjectContext, PersistenceController.preview.container.viewContext)
     }
 }

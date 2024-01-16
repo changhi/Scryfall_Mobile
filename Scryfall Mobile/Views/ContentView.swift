@@ -10,16 +10,15 @@ import CoreData
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) private var viewContext
+    @State var cardName = ""
 
     var body: some View {
         NavigationStack {
             ZStack {
                 VStack {
                     ScryFallTitle()
-                    SearchView()
-                    NavigationLink("Search result") {
-                       SearchResultView()
-                    }
+                    SearchView(cardName: $cardName)
+                    SearchButton(cardName: $cardName)
                 }
                 LinearGradient(gradient: Gradient(colors: [Color("DarkPurple"), Color("LightPurple")]),
                                startPoint: .top,
