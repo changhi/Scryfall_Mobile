@@ -31,12 +31,11 @@ struct SearchButton: View {
     var body: some View {
         VStack {
             NavigationLink("Search") {
-                SearchResultView(vm: SearchResultViewModel(query: cardName, service: ScryfallAPIServices.shared))
+                SearchResultView(vm: SearchResultViewModel(query: $cardName))
             }.frame(width: CGFloat(100), height: CGFloat(30), alignment: .center)
                 .foregroundColor(.white)
                 .background(Color("SearchBarPurple"))
                 .overlay(RoundedRectangle(cornerRadius: 25).stroke(Color.white, lineWidth: 1))
-                
         }
     }
 }

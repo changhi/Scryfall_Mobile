@@ -8,10 +8,16 @@
 import Foundation
 import SwiftUI
 
-class SearchResultViewModel {
-    //@Published var url: URL
+class SearchResultViewModel: ObservableObject {
+    @Binding var query: String
+    @Published var cards: [QueryObject]?
     
-    init(query: String, service: ScryfallAPIServices) {
-        print(service.searchForCard(query: query))
+    init(query: Binding<String>) {
+        self.cards = nil
+        self._query = query
+    }
+    
+    func searchQuery() {
+        ScryfallAPIServices.shared.searchForCard(query: query).assign(to: &$cards)
     }
 }

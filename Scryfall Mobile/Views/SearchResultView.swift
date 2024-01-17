@@ -9,11 +9,19 @@ import Foundation
 import SwiftUI
 
 struct SearchResultView: View {
-    var vm: SearchResultViewModel
+    @StateObject var vm: SearchResultViewModel
     
     var body: some View {
         VStack {
-            Text("Hello world")
+            if let cards = vm.cards {
+                ForEach(cards) { card in
+                    /*@START_MENU_TOKEN@*/Text(card.object)/*@END_MENU_TOKEN@*/
+                }
+            } else {
+                Text("hello")
+            }
+        }.onAppear {
+            vm.searchQuery()
         }
     }
 }

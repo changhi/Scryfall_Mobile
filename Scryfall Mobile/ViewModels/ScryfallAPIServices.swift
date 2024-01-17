@@ -10,7 +10,7 @@ import Combine
 import SwiftUI
 
 protocol ScryfallCardFetcherAPIServices {
-    func searchForCard(query: String) -> AnyPublisher<URL?,Never>
+    func searchForCard(query: String) -> AnyPublisher<[QueryObject]?,Never>
 }
 
 class ScryfallAPIServices: ScryfallCardFetcherAPIServices {
@@ -22,7 +22,7 @@ class ScryfallAPIServices: ScryfallCardFetcherAPIServices {
                 decoder.dateDecodingStrategy = .millisecondsSince1970
                 return decoder
             }()
-    private var urlCache: [String:URL?]
+    private var urlCache: [String:[QueryObject]?]
     
     private init() {
         self.urlCache = [:]
@@ -45,14 +45,42 @@ class ScryfallAPIServices: ScryfallCardFetcherAPIServices {
         return urlComponents.url
     }
     
-    func searchForCard(query: String) -> AnyPublisher<URL?, Never> {
+    func searchForCard(query: String) -> AnyPublisher<[QueryObject]?, Never> {
         if urlCache[query] != nil {
-            return Just<URL?>(urlCache[query]!).eraseToAnyPublisher()
+            return Just<[QueryObject]?>(urlCache[query]!).eraseToAnyPublisher()
         }
+        guard let url = generateURL(with: generateURLQueryItems(query: query)) else { return Just<[QueryObject]?>(nil).eraseToAnyPublisher() }
+        print(url)
         
-        guard let url = generateURL(with: generateURLQueryItems(query: query)) else { return Just<URL?>(nil).eraseToAnyPublisher() }
-        print(query, url)
-        
-        return Just<URL?>(nil).eraseToAnyPublisher()
+        return urlSession.dataTaskPublisher(for: url)
+            .map(\.data)
+            .decode(type: QueryList.self, decoder: jsonDecoder)
+            .map { data in
+                return data.data
+            }
+            .replaceError(with: nil)
+            .eraseToAnyPublisher()
     }
+}
+
+struct QueryList: Decodable {
+    let numCards: Int?
+    let data: [QueryObject]?
+    
+    enum CodingKeys: CodingKey {
+        case numCards
+        case data
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.numCards = try container.decode(Int.self, forKey: .numCards)
+        self.data = try container.decode([QueryObject].self, forKey: .data)
+    }
+}
+
+struct QueryObject: Decodable, Identifiable {
+    let id: UUID
+    let object: String
+    let image_uris: [String:URL]
 }
