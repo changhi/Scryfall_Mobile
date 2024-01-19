@@ -14,9 +14,7 @@ struct SearchResultView: View {
     var body: some View {
         VStack {
             if let cards = vm.cards {
-                ForEach(cards) { card in
-                    /*@START_MENU_TOKEN@*/Text(card.object)/*@END_MENU_TOKEN@*/
-                }
+                Text(cards.data![0].object)
             } else {
                 Text("hello")
             }

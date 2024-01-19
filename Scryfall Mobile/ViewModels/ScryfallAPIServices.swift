@@ -10,7 +10,8 @@ import Combine
 import SwiftUI
 
 protocol ScryfallCardFetcherAPIServices {
-    func searchForCard(query: String) -> AnyPublisher<[QueryObject]?,Never>
+    //func searchForCard(query: String) -> AnyPublisher<[QueryObject]?,Never>
+    func fetchResults(query: String, completion: @escaping (Result<QueryList, Error>) -> Void)
 }
 
 class ScryfallAPIServices: ScryfallCardFetcherAPIServices {
@@ -45,26 +46,26 @@ class ScryfallAPIServices: ScryfallCardFetcherAPIServices {
         return urlComponents.url
     }
     
-    func searchForCard(query: String) -> AnyPublisher<[QueryObject]?, Never> {
-        if urlCache[query] != nil {
-            return Just<[QueryObject]?>(urlCache[query]!).eraseToAnyPublisher()
-        }
-        guard let url = generateURL(with: generateURLQueryItems(query: query)) else { return Just<[QueryObject]?>(nil).eraseToAnyPublisher() }
-        print(url)
-        
-        return urlSession.dataTaskPublisher(for: url)
-            .map(\.data)
-            .decode(type: QueryList.self, decoder: jsonDecoder)
-            .map { data in
-                return data.data
+    func fetchResults(query: String, completion: @escaping (Result<QueryList, Error>) -> Void) {
+        guard let url = generateURL(with: generateURLQueryItems(query: query)) else { return }
+        urlSession.dataTask(with: url) { [self] data, response, error in
+            if let error = error {
+                completion(.failure(error))
             }
-            .replaceError(with: nil)
-            .eraseToAnyPublisher()
+            do {
+                let results = try jsonDecoder.decode(QueryList.self, from: data!)
+                completion(.success(results))
+            }
+            catch let err {
+                completion(.failure(err))
+            }
+        }.resume()
+        
     }
 }
 
 struct QueryList: Decodable {
-    let numCards: Int?
+    let total_cards: Int?
     let data: [QueryObject]?
     
     enum CodingKeys: CodingKey {
@@ -74,7 +75,7 @@ struct QueryList: Decodable {
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.numCards = try container.decode(Int.self, forKey: .numCards)
+        self.total_cards = try container.decode(Int.self, forKey: .numCards)
         self.data = try container.decode([QueryObject].self, forKey: .data)
     }
 }

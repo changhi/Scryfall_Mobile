@@ -10,7 +10,8 @@ import SwiftUI
 
 class SearchResultViewModel: ObservableObject {
     @Binding var query: String
-    @Published var cards: [QueryObject]?
+    @Published var cards: QueryList?
+    @Published var url: URL?
     
     init(query: Binding<String>) {
         self.cards = nil
@@ -18,6 +19,13 @@ class SearchResultViewModel: ObservableObject {
     }
     
     func searchQuery() {
-        ScryfallAPIServices.shared.searchForCard(query: query).assign(to: &$cards)
+        ScryfallAPIServices.shared.fetchResults(query: query) { [weak self] result in
+            switch result {
+            case .success(let results):
+                self?.cards = results
+            case .failure(let error):
+                print(error)
+            }
+        }
     }
 }
