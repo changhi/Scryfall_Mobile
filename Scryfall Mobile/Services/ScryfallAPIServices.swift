@@ -10,7 +10,6 @@ import Combine
 import SwiftUI
 
 protocol ScryfallCardFetcherAPIServices {
-    //func searchForCard(query: String) -> AnyPublisher<[QueryObject]?,Never>
     func fetchResults(query: String, completion: @escaping (Result<QueryList, Error>) -> Void)
 }
 
@@ -69,13 +68,13 @@ struct QueryList: Decodable {
     let data: [QueryObject]?
     
     enum CodingKeys: CodingKey {
-        case numCards
+        case total_cards
         case data
     }
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.total_cards = try container.decode(Int.self, forKey: .numCards)
+        self.total_cards = try container.decode(Int.self, forKey: .total_cards)
         self.data = try container.decode([QueryObject].self, forKey: .data)
     }
 }
@@ -84,4 +83,5 @@ struct QueryObject: Decodable, Identifiable {
     let id: UUID
     let object: String
     let image_uris: [String:URL]
+    let name: String
 }

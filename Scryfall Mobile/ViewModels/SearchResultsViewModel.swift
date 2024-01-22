@@ -10,8 +10,9 @@ import SwiftUI
 
 class SearchResultViewModel: ObservableObject {
     @Binding var query: String
-    @Published var cards: QueryList?
+    @Published var cards: [QueryObject]?
     @Published var url: URL?
+    @Published var numResults: Int?
     
     init(query: Binding<String>) {
         self.cards = nil
@@ -22,7 +23,8 @@ class SearchResultViewModel: ObservableObject {
         ScryfallAPIServices.shared.fetchResults(query: query) { [weak self] result in
             switch result {
             case .success(let results):
-                self?.cards = results
+                self?.cards = results.data
+                self?.numResults = results.total_cards
             case .failure(let error):
                 print(error)
             }
