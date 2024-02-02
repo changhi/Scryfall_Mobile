@@ -84,4 +84,6 @@ struct QueryObject: Decodable, Identifiable {
     let object: String
     let image_uris: [String:URL]
     let name: String
+    let type_line: String
+    let oracle_text: String
 }

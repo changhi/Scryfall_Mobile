@@ -19,6 +19,7 @@
 		6400B9C72B43270200EEB659 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6400B9C62B43270200EEB659 /* SearchView.swift */; };
 		640E98B42B45D022001FCFEF /* ScryFallTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 640E98B32B45D022001FCFEF /* ScryFallTitle.swift */; };
 		640E98B62B471519001FCFEF /* SearchResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 640E98B52B471519001FCFEF /* SearchResultView.swift */; };
+		6441E4232B67365400A8F29F /* CardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6441E4222B67365400A8F29F /* CardViewModel.swift */; };
 		646264472B5328DC00F4944E /* SearchResultsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 646264462B5328DC00F4944E /* SearchResultsViewModel.swift */; };
 		64BFBC792B4CC22F00DBDBBC /* ScryfallAPIServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64BFBC782B4CC22F00DBDBBC /* ScryfallAPIServices.swift */; };
 		64CE55A82B5ED0F300EA4EFB /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64CE55A72B5ED0F300EA4EFB /* CardView.swift */; };
@@ -58,6 +59,7 @@
 		6400B9C62B43270200EEB659 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		640E98B32B45D022001FCFEF /* ScryFallTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScryFallTitle.swift; sourceTree = "<group>"; };
 		640E98B52B471519001FCFEF /* SearchResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultView.swift; sourceTree = "<group>"; };
+		6441E4222B67365400A8F29F /* CardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewModel.swift; sourceTree = "<group>"; };
 		646264462B5328DC00F4944E /* SearchResultsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsViewModel.swift; sourceTree = "<group>"; };
 		64BFBC782B4CC22F00DBDBBC /* ScryfallAPIServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScryfallAPIServices.swift; sourceTree = "<group>"; };
 		64CE55A72B5ED0F300EA4EFB /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 			isa = PBXGroup;
 			children = (
 				646264462B5328DC00F4944E /* SearchResultsViewModel.swift */,
+				6441E4222B67365400A8F29F /* CardViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -316,6 +319,7 @@
 				640E98B62B471519001FCFEF /* SearchResultView.swift in Sources */,
 				6400B9982B4322D300EEB659 /* ContentView.swift in Sources */,
 				6400B9962B4322D300EEB659 /* Scryfall_MobileApp.swift in Sources */,
+				6441E4232B67365400A8F29F /* CardViewModel.swift in Sources */,
 				640E98B42B45D022001FCFEF /* ScryFallTitle.swift in Sources */,
 				64CE55A82B5ED0F300EA4EFB /* CardView.swift in Sources */,
 				6400B9A22B4322D500EEB659 /* Scryfall_Mobile.xcdatamodeld in Sources */,

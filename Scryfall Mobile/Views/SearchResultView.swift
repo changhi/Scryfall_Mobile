@@ -21,7 +21,7 @@ struct SearchResultView: View {
                     ScrollView {
                         ForEach(cards) { card in
                             NavigationLink {
-                                CardView()
+                                CardView(vm: CardViewModel(card: card))
                             } label: {
                                 CardTile(card: card)
                             }
