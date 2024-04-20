@@ -11,46 +11,60 @@ import SwiftUI
 
 class CardViewModel: ObservableObject {
     @Published var card: QueryObject
-    @Published var orcale: [String]
-    @Published var orcaleOrder: [String]
     
     init(card: QueryObject) {
         self.card = card
-        orcale = []
-        orcaleOrder = []
     }
     
-    func convertOrcaleText() {
-        let scanner = Scanner(string: card.oracle_text)
+}
+
+
+extension LocalizedStringKey {
+
+    private static let imageMap: [String: String] = [
+        "T": "Tap"
+    ]
+
+    init(imageText: String) {
+        var components = [Any]()
+        var length = 0
+        let scanner = Scanner(string: imageText)
         scanner.charactersToBeSkipped = nil
-        
         while scanner.isAtEnd == false {
             let up = scanner.scanUpToString("{")
             let start = scanner.scanString("{")
-            let text = scanner.scanUpToString("}")
+            let name = scanner.scanUpToString("}")
             let end = scanner.scanString("}")
-            
             if let up = up {
-                orcale.append(up)
-                orcaleOrder.append("t")
+                components.append(up)
+                length += up.count
             }
-            if let name = text {
-                if start != nil, end != nil, let imageName = MTGSymbols.imageMap[name] {
-                    orcale.append(imageName)
-                    orcaleOrder.append("i")
+            if let name = name {
+                if start != nil, end != nil, let imageName = Self.imageMap[name] {
+                    components.append(Image(imageName))
+                    length += 1
                 } else {
-                    orcale.append(name)
-                    orcaleOrder.append("t")
+                    components.append(name)
                 }
             }
         }
-        print(orcale)
+
+        var interp = LocalizedStringKey.StringInterpolation(literalCapacity: length, interpolationCount: components.count)
+        for component in components {
+            if let string = component as? String {
+                interp.appendInterpolation(string)
+            }
+            if let image = component as? Image {
+                interp.appendInterpolation(image)
+            }
+        }
+
+        self.init(stringInterpolation: interp)
     }
 }
 
-struct MTGSymbols {
-    static let imageMap = [
-        "T" : "tapSymbol"
-    ]
+extension Text {
+    init(imageText: String) {
+        self.init(LocalizedStringKey(imageText: imageText))
+    }
 }
-

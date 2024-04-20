@@ -11,6 +11,7 @@ import SwiftUI
 struct CardView: View {
     @StateObject var vm: CardViewModel
     private let screenWidth =  UIScreen.main.bounds.size.width - 40
+    @ScaledMetric(relativeTo: .body) var imageSize = 17
     
     var body: some View {
         VStack {
@@ -31,11 +32,12 @@ struct CardView: View {
                         Text(vm.card.type_line)
                             .padding(10)
                         Divider()
+                        Text(imageText: vm.card.oracle_text)
+                        
                     }.frame(maxWidth: screenWidth, alignment: .leading)
                         .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.black, lineWidth: 3))
                 }
             }
-            .onAppear(perform: vm.convertOrcaleText)
         }
     }
 }
